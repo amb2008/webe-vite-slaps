@@ -25,7 +25,17 @@
   // Create the deck of Uno cards
   suits.forEach((suit) => {
     values.forEach((value) => {
-      deck.push({ suit, value });
+      let key = value;
+      if (value == "jack") {
+        key = "J";
+      } else if (value == "queen") {
+        key = "Q";
+      } else if (value == "king") {
+        key = "K";
+      } else if (value == "ace") {
+        key = "A";
+      }
+      deck.push({ suit, value, key });
     });
   });
 
@@ -49,7 +59,7 @@
   console.log(player_2_cards);
 
   let placed_cards = [];
-
+  let lastThree = [];
   function placeCard(player) {
     let card_to_place = {};
     if (player == 1) {
@@ -60,21 +70,24 @@
     }
 
     placed_cards.push(card_to_place);
-    console.log(placed_cards);
 
+    lastThree = placed_cards.slice(-3);
+    lastThree = lastThree;
     placed_cards = placed_cards;
+    player_1_cards = player_1_cards;
+    player_2_cards = player_2_cards;
   }
-
-  placeCard(1);
 </script>
 
-<main>
+<main style="transform: translateY(-100px);">
   <button
     on:click={() => {
       placeCard(1);
     }}
   >
-    Player 1: Place Card
+    <strong>Player 1: Place Card</strong>
+    <br />
+    Cards Left: {player_1_cards.length}
   </button>
 
   <button
@@ -82,13 +95,19 @@
       placeCard(2);
     }}
   >
-    Player 2: Place Card
+    <strong>Player 2: Place Card</strong>
+    <br />
+    Cards Left: {player_2_cards.length}
   </button>
 
   <p>
-    {#each placed_cards as placed_card}
-      {placed_card.suit}
-      {placed_card.value}
+    {#each lastThree as placed_card, i}
+      <img
+        src={`../public/cards-images/${placed_card.suit}s_${placed_card.key}.png`}
+        alt={`${placed_card.value} of ${placed_card.suit}`}
+        style="position: absolute; transform: translateX({-50 +
+          10 * i}%) translateY({10 * i}%);"
+      />
       <br />
     {/each}
   </p>
