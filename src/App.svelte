@@ -35,35 +35,63 @@
 
   shuffleDeck();
 
-  var cards_per = Math.round(deck.length/2)
+  let cards_per = Math.round(deck.length / 2);
 
-  console.log(deck);
+  let player_1_cards = [];
+  let player_2_cards = [];
+
+  for (let i = 0; i < cards_per; i++) {
+    player_1_cards.push(deck[i]);
+    player_2_cards.push(deck[i + cards_per]);
+  }
+
+  console.log(player_1_cards);
+  console.log(player_2_cards);
+
+  let placed_cards = [];
+
+  function placeCard(player) {
+    let card_to_place = {};
+    if (player == 1) {
+      card_to_place = player_1_cards.pop();
+      console.log(player_1_cards);
+    } else {
+      card_to_place = player_2_cards.pop();
+    }
+
+    placed_cards.push(card_to_place);
+    console.log(placed_cards);
+
+    placed_cards = placed_cards;
+  }
+
+  placeCard(1);
 </script>
 
 <main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
+  <button
+    on:click={() => {
+      placeCard(1);
+    }}
+  >
+    Player 1: Place Card
+  </button>
 
-  <div class="card">
-    <Counter />
-  </div>
+  <button
+    on:click={() => {
+      placeCard(2);
+    }}
+  >
+    Player 2: Place Card
+  </button>
 
   <p>
-    Check out <a
-      href="https://github.com/sveltejs/kit#readme"
-      target="_blank"
-      rel="noreferrer">SvelteKit</a
-    >, the official Svelte app framework powered by Vite!
+    {#each placed_cards as placed_card}
+      {placed_card.suit}
+      {placed_card.value}
+      <br />
+    {/each}
   </p>
-
-  <p class="read-the-docs">Click on the Vite and Svelte logos to learn more</p>
 </main>
 
 <style>
